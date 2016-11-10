@@ -1,0 +1,10 @@
+parameters:
+    log_dir: "./app/logs/"
+    legger_level: 'info'
+    analyzers:
+        ns:
+            - DynDnsAnalyzer
+            - EasyDnsAnalyzer
+        html:
+            - GoogleAnalyticsAnalyzer
+            - YandexMetrikaAnalyzer

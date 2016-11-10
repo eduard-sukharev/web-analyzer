@@ -1,0 +1,13 @@
+# Logs
+/app/logs/*
+!app/logs/.gitkeep
+
+# Managed by Composer
+/vendor/
+
+# PHPStorm
+/.idea/
+
+# PHPUnit
+/app/phpunit.xml
+/phpunit.xml

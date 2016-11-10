@@ -1,0 +1,17 @@
+services:
+    web_analyzer.analyzer_factory:
+        class:     \WebAnalyzer\CrawlerBundle\Analyzer\AnalyzerFactory
+        arguments:
+            - '@logger'
+            - '%analyzers%'
+
+    log_file_handler:
+        class: \Monolog\Handler\StreamHandler
+        arguments: [ '%log_dir%/application.log', '%legger_level%']
+
+    logger:
+        class: \Monolog\Logger
+        arguments:
+            - 'datanyzer'
+            - [ '@log_file_handler' ]
+

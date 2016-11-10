@@ -1,0 +1,4 @@
+parameters:
+    crawler_headers:
+        User-Agent: 'Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:47.0) Gecko/20100101 Firefox/47.0'
+        Cookie: 'GOOGLE_ABUSE_EXEMPTION=ID=40ef398478f06c24:TM=1478331315:C=c:IP=88.147.243.97-:S=APGng0tx_Yrq6YjvdD8KAtEdL-jno7J5WQ; NID=90=lS8FPwygaI1BL8GiYu1x3tZ7eUVQZpw8kkjNd4g_R-qY25DdVggEYrBvgrX7KEZn54GR47lbCX_cZ3zLyxODZVpTV4jKlspzOWGP8-ia7824nt5heQ-q9arjvGP3jNmE; OGPC=5061451-1:'

@@ -1,0 +1,21 @@
+{
+    "name": "web-analyzer/crawler",
+    "license": "MIT",
+    "type": "project",
+    "description": "Web site crawler and technology detector",
+    "autoload": {
+        "psr-4": {
+            "": "src/"
+        }
+    },
+    "require": {
+        "symfony/console": "^3.1",
+        "symfony/dependency-injection": "^3.1",
+        "symfony/config": "^3.1",
+        "symfony/yaml": "^3.1",
+        "symfony/expression-language": "^3.1",
+        "monolog/monolog": "^1.21",
+        "guzzlehttp/guzzle": "^6.2",
+        "symfony/dom-crawler": "^3.1"
+    }
+}

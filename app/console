@@ -1,0 +1,30 @@
+#!/usr/bin/env php
+<?php
+/**
+ * Copyright (c) Eduard Sukharev
+ * Standard MIT License. See LICENSE.txt for full license text.
+ */
+
+require __DIR__ . '/../vendor/autoload.php' || __DIR__ . '/vendor/autoload.php';
+
+use Symfony\Component\DependencyInjection\ContainerBuilder;
+use Symfony\Component\Config\FileLocator;
+use Symfony\Component\DependencyInjection\Loader\YamlFileLoader;
+use WebAnalyzer\CrawlerBundle\Bootstrap\SingleCommandApplication;
+
+$configDirs = [
+    __DIR__ . '/../src/WebAnalyzer/CrawlerBundle/Resources/',
+    __DIR__ . '/../app/config',
+    __DIR__ . '/src/WebAnalyzer/CrawlerBundle/Resources/',
+    __DIR__ . '/app/config',
+];
+
+$container = new ContainerBuilder();
+$loader = new YamlFileLoader($container, new FileLocator($configDirs));
+$loader->load('services.yml');
+$loader->load('crawler_headers.yml');
+$loader->load('config.yml');
+
+$application = new SingleCommandApplication('WebAnalyzer', '0.1.1', $container);
+
+$application->run();
