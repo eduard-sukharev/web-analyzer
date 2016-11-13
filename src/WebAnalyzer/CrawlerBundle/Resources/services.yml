@@ -1,4 +1,8 @@
 services:
+    web_analyzer.command.analyze_page:
+        class:     \WebAnalyzer\CrawlerBundle\Command\AnalyzePageCommand
+        tags:
+            - { name: 'console.command' }
     web_analyzer.analyzer_factory:
         class:     \WebAnalyzer\CrawlerBundle\Analyzer\AnalyzerFactory
         arguments:
@@ -12,6 +16,6 @@ services:
     logger:
         class: \Monolog\Logger
         arguments:
-            - 'datanyzer'
+            - '%application_name%'
             - [ '@log_file_handler' ]
 

@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "cd61dbe9784d4d3209fe9f3aa098a3d0",
-    "content-hash": "5b0b2eb2a6f8a8fab14be01db0048030",
+    "hash": "04dad789bebcb708592573de7b091a9f",
+    "content-hash": "9c4a67c95b04eee11457c15376a45a4d",
     "packages": [
         {
             "name": "guzzlehttp/guzzle",
@@ -354,6 +354,56 @@
             "time": "2016-10-10 12:19:37"
         },
         {
+            "name": "rodrigodiez/symfony-rich-console",
+            "version": "1.0.2",
+            "target-dir": "Rodrigodiez/Component/RichConsole",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/eduard-sukharev/symfony-rich-console.git",
+                "reference": "1c2901f34151d025e0dcf4c6c3cd38eedecd03f6"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/eduard-sukharev/symfony-rich-console/zipball/1c2901f34151d025e0dcf4c6c3cd38eedecd03f6",
+                "reference": "1c2901f34151d025e0dcf4c6c3cd38eedecd03f6",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.3.3",
+                "symfony/config": ">=2.3",
+                "symfony/console": ">=2.3",
+                "symfony/dependency-injection": ">=2.3",
+                "symfony/event-dispatcher": ">=2.3",
+                "symfony/finder": ">=2.3",
+                "symfony/yaml": ">=2.3"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "1.0.x-dev"
+                }
+            },
+            "autoload": {
+                "psr-0": {
+                    "Rodrigodiez\\Component\\RichConsole\\": ""
+                }
+            },
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Rodrigo Díez Villamuera",
+                    "email": "rodrigo@rodrigodiez.io"
+                }
+            ],
+            "description": "Integrates both Dependency Injection and Event Dispatcher components into non framework Symfony Console applications",
+            "support": {
+                "source": "https://github.com/eduard-sukharev/symfony-rich-console/tree/1.0.2"
+            },
+            "time": "2016-11-13 11:56:45"
+        },
+        {
             "name": "symfony/config",
             "version": "v3.1.6",
             "source": {
@@ -641,6 +691,66 @@
             "time": "2016-10-18 15:46:07"
         },
         {
+            "name": "symfony/event-dispatcher",
+            "version": "v3.1.6",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/symfony/event-dispatcher.git",
+                "reference": "28b0832b2553ffb80cabef6a7a812ff1e670c0bc"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/symfony/event-dispatcher/zipball/28b0832b2553ffb80cabef6a7a812ff1e670c0bc",
+                "reference": "28b0832b2553ffb80cabef6a7a812ff1e670c0bc",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.5.9"
+            },
+            "require-dev": {
+                "psr/log": "~1.0",
+                "symfony/config": "~2.8|~3.0",
+                "symfony/dependency-injection": "~2.8|~3.0",
+                "symfony/expression-language": "~2.8|~3.0",
+                "symfony/stopwatch": "~2.8|~3.0"
+            },
+            "suggest": {
+                "symfony/dependency-injection": "",
+                "symfony/http-kernel": ""
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "3.1-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Symfony\\Component\\EventDispatcher\\": ""
+                },
+                "exclude-from-classmap": [
+                    "/Tests/"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Fabien Potencier",
+                    "email": "fabien@symfony.com"
+                },
+                {
+                    "name": "Symfony Community",
+                    "homepage": "https://symfony.com/contributors"
+                }
+            ],
+            "description": "Symfony EventDispatcher Component",
+            "homepage": "https://symfony.com",
+            "time": "2016-10-13 06:28:43"
+        },
+        {
             "name": "symfony/expression-language",
             "version": "v3.1.6",
             "source": {
@@ -737,6 +847,55 @@
             "description": "Symfony Filesystem Component",
             "homepage": "https://symfony.com",
             "time": "2016-10-18 04:30:12"
+        },
+        {
+            "name": "symfony/finder",
+            "version": "v3.1.6",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/symfony/finder.git",
+                "reference": "205b5ffbb518a98ba2ae60a52656c4a31ab00c6f"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/symfony/finder/zipball/205b5ffbb518a98ba2ae60a52656c4a31ab00c6f",
+                "reference": "205b5ffbb518a98ba2ae60a52656c4a31ab00c6f",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.5.9"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "3.1-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Symfony\\Component\\Finder\\": ""
+                },
+                "exclude-from-classmap": [
+                    "/Tests/"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Fabien Potencier",
+                    "email": "fabien@symfony.com"
+                },
+                {
+                    "name": "Symfony Community",
+                    "homepage": "https://symfony.com/contributors"
+                }
+            ],
+            "description": "Symfony Finder Component",
+            "homepage": "https://symfony.com",
+            "time": "2016-09-28 00:11:12"
         },
         {
             "name": "symfony/polyfill-mbstring",

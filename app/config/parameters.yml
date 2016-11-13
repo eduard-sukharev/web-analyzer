@@ -1,4 +1,7 @@
 parameters:
+    application_name: WebAnalyzer
+    application_version: 0.1
+
     log_dir: "./app/logs/"
     legger_level: 'info'
     analyzers:
