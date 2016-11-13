@@ -16,7 +16,10 @@ use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\DependencyInjection\Container;
-use WebAnalyzer\CrawlerBundle\Analyzer\AnalyzerFactory;
+use Symfony\Component\EventDispatcher\EventDispatcher;
+use WebAnalyzer\CrawlerBundle\EventSubscriber\Event\AbstractAnalyzerEvent;
+use WebAnalyzer\CrawlerBundle\EventSubscriber\Event\HtmlCrawlEvent;
+use WebAnalyzer\CrawlerBundle\EventSubscriber\Event\NsLookupEvent;
 use WebAnalyzer\CrawlerBundle\Mapping\AnalysisResult;
 
 /**
@@ -39,10 +42,14 @@ class AnalyzePageCommand extends Command
         $uri = $input->getArgument('uri');
 
         try {
-            $results = [];
-            $results = $this->analyzeHtml($uri, $results);
-            $results = $this->analyzeNs($uri, $results);
+            $htmlEvent = $this->analyzeHtml($uri);
+            $htmlAnalysisResult = $htmlEvent->getAnalysisResults();
 
+            $nsEvent = $this->analyzeNs($uri);
+            $nsAnalysisResult = $nsEvent->getAnalysisResults();
+
+            /** @var AnalysisResult[] $results */
+            $results = array_merge($htmlAnalysisResult, $nsAnalysisResult);
             foreach ($results as $result) {
                 $output->writeln(sprintf('Using %s: %s', $result->getTechnologyName(), $result->isFound() ? 'yes' : 'no'));
             }
@@ -60,19 +67,18 @@ class AnalyzePageCommand extends Command
 
     /**
      * @param string $uri
-     * @param array $results
-     * @return array|AnalysisResult[]
+     * @return AbstractAnalyzerEvent
      */
-    private function analyzeHtml($uri, $results = array())
+    private function analyzeHtml($uri)
     {
-        $htmlAnalyzers = $this->getAnalyzerFactory()->createHtmlAnalyzers();
-
         $response = $this->makeRequest($uri);
-        $respnseBody = $response->getBody()->getContents();
-        foreach ($htmlAnalyzers as $htmlAnalyzer) {
-            $results[] = $htmlAnalyzer->analyze($respnseBody);
-        }
-        return $results;
+        $responseBody = $response->getBody()->getContents();
+
+        $htmlCrawlEvent = new HtmlCrawlEvent($responseBody);
+
+        $this->getEventDispatcher()->dispatch(HtmlCrawlEvent::NAME, $htmlCrawlEvent);
+
+        return $htmlCrawlEvent;
     }
 
     /**
@@ -103,21 +109,23 @@ class AnalyzePageCommand extends Command
 
     /**
      * @param string $uri
-     * @param array $results
-     * @return array|AnalysisResult[]
+     *
+     * @return AbstractAnalyzerEvent
+     *
+     * @throws Exception
      */
-    protected function analyzeNs($uri, $results = array())
+    protected function analyzeNs($uri)
     {
-        $nsAnalyzers = $this->getAnalyzerFactory()->createNsAnalyzers();
         if (!preg_match('/(?:\w+\:\/\/)?(?:.+?\.)?(?<host>[\w-]+\.\w+)(?:\/.*)?/', $uri, $matches)) {
             throw new Exception(sprintf('Unable to parse domain name from "%s"', $uri));
         }
         $nsLookupResults = dns_get_record($matches['host'], DNS_NS);
-        foreach ($nsAnalyzers as $nsAnalyzer) {
-            $results[] = $nsAnalyzer->analyze($nsLookupResults);
-        }
 
-        return $results;
+        $nsLookupEvent = new NsLookupEvent($nsLookupResults);
+
+        $this->getEventDispatcher()->dispatch(NsLookupEvent::NAME, $nsLookupEvent);
+
+        return $nsLookupEvent;
     }
 
     /**
@@ -129,11 +137,11 @@ class AnalyzePageCommand extends Command
     }
 
     /**
-     * @return AnalyzerFactory
+     * @return EventDispatcher
      */
-    private function getAnalyzerFactory()
+    private function getEventDispatcher()
     {
-        return $this->getContainer()->get('web_analyzer.analyzer_factory');
+        return $this->getContainer()->get('event_dispatcher');
     }
 
     /**

@@ -3,11 +3,28 @@ services:
         class:     \WebAnalyzer\CrawlerBundle\Command\AnalyzePageCommand
         tags:
             - { name: 'console.command' }
-    web_analyzer.analyzer_factory:
-        class:     \WebAnalyzer\CrawlerBundle\Analyzer\AnalyzerFactory
-        arguments:
-            - '@logger'
-            - '%analyzers%'
+
+    web_analyzer.analyzer.google_analytics:
+        class:     \WebAnalyzer\CrawlerBundle\EventSubscriber\Analyzer\Html\GoogleAnalyticsAnalyzer
+        arguments: [ '@logger']
+        tags:
+            - { name: 'kernel.event_subscriber' }
+    web_analyzer.analyzer.yandex_metrika:
+        class:     \WebAnalyzer\CrawlerBundle\EventSubscriber\Analyzer\Html\YandexMetrikaAnalyzer
+        arguments: [ '@logger']
+        tags:
+            - { name: 'kernel.event_subscriber' }
+
+    web_analyzer.analyzer.dyn_dns:
+        class:     \WebAnalyzer\CrawlerBundle\EventSubscriber\Analyzer\Ns\DynDnsAnalyzer
+        arguments: [ '@logger']
+        tags:
+            - { name: 'kernel.event_subscriber' }
+    web_analyzer.analyzer.easy_dns:
+        class:     \WebAnalyzer\CrawlerBundle\EventSubscriber\Analyzer\Ns\EasyDnsAnalyzer
+        arguments: [ '@logger']
+        tags:
+            - { name: 'kernel.event_subscriber' }
 
     log_file_handler:
         class: \Monolog\Handler\StreamHandler

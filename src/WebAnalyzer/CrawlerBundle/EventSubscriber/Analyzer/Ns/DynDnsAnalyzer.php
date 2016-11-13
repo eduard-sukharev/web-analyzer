@@ -4,7 +4,7 @@
  * Standard MIT License. See LICENSE.txt for full license text.
  */
 
-namespace WebAnalyzer\CrawlerBundle\Analyzer\Ns;
+namespace WebAnalyzer\CrawlerBundle\EventSubscriber\Analyzer\Ns;
 
 use WebAnalyzer\CrawlerBundle\Mapping\SignaturesMapping;
 

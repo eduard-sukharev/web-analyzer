@@ -4,19 +4,20 @@
  * Standard MIT License. See LICENSE.txt for full license text.
  */
 
-namespace WebAnalyzer\CrawlerBundle\Analyzer\Html;
+namespace WebAnalyzer\CrawlerBundle\EventSubscriber\Analyzer\Html;
 
 use DOMElement;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\DomCrawler\Crawler;
-use WebAnalyzer\CrawlerBundle\Analyzer\AnalyzerInterface;
+use Symfony\Component\EventDispatcher\EventSubscriberInterface;
+use WebAnalyzer\CrawlerBundle\EventSubscriber\Event\HtmlCrawlEvent;
 use WebAnalyzer\CrawlerBundle\Mapping\AnalysisResult;
 use WebAnalyzer\CrawlerBundle\Mapping\SignaturesMapping;
 
 /**
  * Abstract technology analyzer. Defines Common behavior of all analyzers
  */
-abstract class AbstractHtmlAnalyzer implements AnalyzerInterface
+abstract class AbstractHtmlAnalyzer implements EventSubscriberInterface
 {
     /**
      * @var LoggerInterface
@@ -27,6 +28,13 @@ abstract class AbstractHtmlAnalyzer implements AnalyzerInterface
      * @return SignaturesMapping[]
      */
     abstract public function getSignatures();
+
+    public static function getSubscribedEvents()
+    {
+        return [
+            HtmlCrawlEvent::NAME => 'onHtmlCrawl',
+        ];
+    }
 
     /**
      * Technology name as to be appeared in results output
@@ -44,11 +52,10 @@ abstract class AbstractHtmlAnalyzer implements AnalyzerInterface
 
     /**
      * @param string $responseBody
-     * @return AnalysisResult
      */
-    public function analyze($responseBody)
+    public function onHtmlCrawl(HtmlCrawlEvent $htmlCrawlEvent)
     {
-        $crawler = new Crawler($responseBody);
+        $crawler = new Crawler($htmlCrawlEvent->getRawHtml());
 
         foreach ($this->getSignatures() as $key => $signatureMapping) {
             $signatureNodes = $crawler->filterXPath($key);
@@ -61,12 +68,16 @@ abstract class AbstractHtmlAnalyzer implements AnalyzerInterface
                     if (stripos($content, $possibleSignature) !== false) {
                         $this->logger->debug(sprintf('Found signature %s by %s', $possibleSignature, $key));
 
-                        return new AnalysisResult($this->getTechnologyName(), true);
+                        $htmlCrawlEvent->addAnalysisResult(new AnalysisResult($this->getTechnologyName(), true));
+
+                        return;
                     }
                 }
             }
         }
 
-        return new AnalysisResult($this->getTechnologyName(), false);
+        $htmlCrawlEvent->addAnalysisResult(new AnalysisResult($this->getTechnologyName(), false));
+
+        return;
     }
 }
